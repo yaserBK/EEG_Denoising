@@ -1,14 +1,18 @@
-import config
+import json
+from pathlib import Path
+from .config import PATH_TO_TUAR_JSON
 
 
-_cache = {}
-
-def __getattr__(name: str):
-    if name == "MASTER":
-        if "MASTER" not in _cache:
-            with open("master.json") as f:
-                _cache["MASTER"] = objectpath.Tree(json.load(f))
-        return _cache["MASTER"]
-    raise AttributeError(f"module 'data' has no attribute {name!r}")
+def load_master() -> dict:
+    with open(PATH_TO_TUAR_JSON / "master.json") as f:
+        return json.load(f)
 
 
+def load_patient(patient_id: str) -> dict:
+    with open(PATH_TO_TUAR_JSON / f"{patient_id}.json") as f:
+        return json.load(f)
+
+
+def iter_patients(master: dict):
+    for patient_id in master["Patients"]:
+        yield patient_id, load_patient(patient_id)
