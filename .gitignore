@@ -18,3 +18,5 @@ __pycache__/
 
 #
 src/
+
+plots/
