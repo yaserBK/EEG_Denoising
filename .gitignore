@@ -5,7 +5,10 @@
 .venv/
 
 # Data
-data/
+data/annotated/
+data/json/
+data/raw/
+
 other_data/
 
 # Python build artifacts
@@ -18,4 +21,3 @@ __pycache__/
 
 #
 src/
-
