@@ -1,0 +1,17 @@
+# IDE
+.idea/
+
+# Virtual environment
+.venv/
+
+# Data
+data/
+other_data/
+
+# Python build artifacts
+*.egg-info/
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
