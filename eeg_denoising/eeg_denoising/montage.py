@@ -1,7 +1,9 @@
-import config
+from .config import PATH_TO_TUAR_01_TCP_AR_CUSTOM_MONTAGE
+from pathlib import Path
+import mne
 
 _MONTAGE_FILES = {
-    "TUAR_TCP_AR": config.PATH_TO_TUAR_01_TCP_AR_CUSTOM_MONTAGE,
+    "TUAR_TCP_AR": Path(PATH_TO_TUAR_01_TCP_AR_CUSTOM_MONTAGE),
 }
 
 _montage_cache = {}
@@ -11,13 +13,13 @@ def __getattr__(name: str):
         raise AttributeError(f"module 'montages' has no attribute {name!r}")
 
     if name not in _montage_cache:
-        fpath = os.path.join(_MONTAGE_DIR, _MONTAGE_FILES[name])
+        fpath = _MONTAGE_FILES[name]  # was mistakenly _MONTAGE_FILES
         _montage_cache[name] = read_nedc_montage(fpath)
 
     return _montage_cache[name]
 
 
-def read_nedc_montage(fpath: str) -> list[dict]:
+def read_nedc_montage(fpath: Path) -> list[dict]:
     montage = []
 
     with open(fpath, "r") as fh:
@@ -45,9 +47,7 @@ def read_nedc_montage(fpath: str) -> list[dict]:
     return montage
 
 
-def apply_nedc_montage(raw: mne.io.BaseRaw, fpath: str) -> mne.io.BaseRaw:
-    channels = read_nedc_montage(fpath)
-
+def apply_nedc_montage(raw: mne.io.BaseRaw, channels: list[dict]) -> mne.io.BaseRaw:
     anodes   = [ch["anode"]   for ch in channels]
     cathodes = [ch["cathode"] for ch in channels]
     names    = [ch["name"]    for ch in channels]

@@ -1,5 +1,4 @@
 from pathlib import Path
-import montage_util as montage
 
 # ==================================================
 #                  PATH DEFINITIONS
