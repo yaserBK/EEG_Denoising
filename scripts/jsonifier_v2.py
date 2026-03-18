@@ -44,7 +44,7 @@ JSON output:
     - total_labels      Number of unique labels for this ID
     - label_totals      Label counts for this ID only
 
-  has_seiz is set at both the ID and recording level:
+  has_seiz_file is set at both the ID and recording level:
     - ID level          True if any recording for this ID has a _seiz CSV
     - Recording level   True if this specific recording has a _seiz CSV
 
@@ -220,10 +220,10 @@ def build_id_summary(entry, edf_index):
     }
 
 def build_id_payload(pid, entry, edf_index):
-    has_seiz = any(rec['seiz_csv'] is not None for rec in entry['recordings'].values())
+    has_seiz_file = any(rec['seiz_csv'] is not None for rec in entry['recordings'].values())
     return {
         "id":          pid,
-        "has_seiz":    has_seiz,
+        "has_seiz_file":    has_seiz_file,
         "summary":     build_id_summary(entry, edf_index),
         "total_rows":  entry['total_rows'],
         "labels":      dict(sorted(entry['label_counts'].items())),
@@ -317,7 +317,7 @@ for root in roots:
                 'csv':         rel,
                 'edf':         edf_index.get(base),
                 'seiz_csv':    strip_root(seiz_csv_files[base], root) if base in seiz_csv_files else None,
-                'has_seiz':    base in seiz_csv_files,
+                'has_seiz_file':    base in seiz_csv_files,
                 'duration':    duration,
                 'labels':      label_data,
                 'seiz_labels': rec_seiz_data
@@ -339,8 +339,8 @@ for root in roots:
                 files        = id_data[pid]['files']
                 total        = id_data[pid]['total_rows']
                 dur          = id_data[pid]['total_duration']
-                has_seiz     = any(r['has_seiz'] for r in id_data[pid]['recordings'].values())
-                print(f"{pid} ({len(files)} file{'s' if len(files) != 1 else ''}, {total} total rows, {dur:.1f}s, has_seiz={has_seiz}):")
+                has_seiz_file     = any(r['has_seiz_file'] for r in id_data[pid]['recordings'].values())
+                print(f"{pid} ({len(files)} file{'s' if len(files) != 1 else ''}, {total} total rows, {dur:.1f}s, has_seiz_file={has_seiz_file}):")
                 for label in sorted(label_counts):
                     print(f"  {label}: {label_counts[label]}")
         elif show_dirs:

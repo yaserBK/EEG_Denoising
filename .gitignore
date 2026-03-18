@@ -5,7 +5,7 @@
 .venv/
 
 # Datasets
-data/
+data/*/*
 other_data/
 
 # Python build artifacts
