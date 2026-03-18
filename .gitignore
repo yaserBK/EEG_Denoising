@@ -4,11 +4,8 @@
 # Virtual environment
 .venv/
 
-# Data
-data/annotated/
-data/json/
-data/raw/
-
+# Datasets
+data
 other_data/
 
 # Python build artifacts
